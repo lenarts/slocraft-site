@@ -51,14 +51,48 @@
             right: -100px;
             z-index: -1;
         }
+
+        /* Toast Styles */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #22c55e;
+            color: #fff;
+            text-align: center;
+            border-radius: 16px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
     </style>
 </head>
 <body class="antialiased">
 
+    <div id="toast">IP slocraft.net copied!</div>
     <div class="glow"></div>
 
     <nav class="max-w-6xl mx-auto px-6 py-10 flex justify-between items-center">
-        <div class="text-2xl font-800 tracking-tighter italic">SLOCRAFT</div>
+        <div class="text-2xl font-800 tracking-tighter italic text-white">SLOCRAFT</div>
         <div class="flex gap-8 items-center font-bold text-xs uppercase tracking-widest text-gray-500">
             <a href="#modes" class="hover:text-white transition">Gamemodes</a>
             <a href="https://discord.gg/FRhytnru" target="_blank" class="text-indigo-400 hover:text-indigo-300">Join Discord</a>
@@ -135,7 +169,11 @@
     <script>
         function copyIP() {
             navigator.clipboard.writeText("slocraft.net");
-            alert("IP slocraft.net copied!");
+            
+            // Toast notification logic
+            var x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
 
         async function updateStatus() {
