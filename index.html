@@ -1,113 +1,325 @@
 <!DOCTYPE html>
-<html lang="sl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SloCraft</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SloCraft | Official Minecraft Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-glow: rgba(76, 175, 80, 0.4);
+            --bg-body: #121212;
+            --bg-nav: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --card-border: #2a2a2a;
+            --text-main: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --accent-vote: #FFD700;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        nav {
+            background: var(--bg-nav);
+            backdrop-filter: blur(12px);
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10000;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--primary); }
+        nav a.vote-nav { color: var(--accent-vote); }
+
+        header {
+            background: radial-gradient(circle at center, rgba(76, 175, 80, 0.1) 0%, rgba(0,0,0,0) 70%),
+                        linear-gradient(rgba(18,18,18,0.4), var(--bg-body)),
+                        url('https://images.unsplash.com/photo-1623934199716-dc31003a3253?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 45vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        header h1 { 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem; 
+            margin: 0; 
+            color: white; 
+            font-weight: 900;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        header p { color: var(--text-dim); margin: 10px 0 25px; font-weight: 300; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        section { padding: 80px 0; }
+
+        .status-container {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin: -40px auto 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .status-item { text-align: center; }
+        .status-label { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; }
+        .status-value { font-weight: 700; font-size: 1.1rem; display: block; }
+
+        .copy-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed var(--primary);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .copy-box:hover { background: var(--primary); color: white; }
+
+        .vote-section {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.05), rgba(76, 175, 80, 0.05));
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            margin-top: 40px;
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .mode-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .mode-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .mode-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+        .mode-card img { filter: drop-shadow(0 0 5px var(--primary-glow)); } /* Za lepši sij meča */
+        .mode-card h3 { margin: 0 0 10px 0; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
+        .mode-card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; }
+
+        .staff-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 40px; }
+        .member { width: 100px; text-align: center; }
+        .member img { width: 100%; border-radius: 20px; border: 2px solid var(--card-border); margin-bottom: 10px; transition: 0.3s; }
+        .member:hover img { border-color: var(--primary); transform: scale(1.05); }
+        .member span { font-size: 0.7rem; color: var(--primary); text-transform: uppercase; }
+
+        details { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 12px; }
+        summary { padding: 18px 25px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; }
+        summary::after { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary); }
+        .faq-text { padding: 0 25px 20px; color: var(--text-dim); font-size: 0.95rem; }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .btn-v { background: var(--accent-vote); color: #000; }
+        .btn-d { background: #5865F2; color: white; margin-left: 10px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        footer { padding: 60px 0; text-align: center; border-top: 1px solid var(--card-border); color: var(--text-dim); font-size: 0.8rem; }
+    </style>
 </head>
 <body>
 
-<header>
-    <h1>SLOCRAFT</h1>
-    <p>Join our server!!</p>
-</header>
-
 <nav>
-    <a href="">Home</a>
-    <a href="">Rules</a>
-    <a href="">Discord</a>
+    <a href="#home">Home</a>
+    <a href="#gamemodes">Modes</a>
+    <a href="#vote" class="vote-nav">Vote</a>
+    <a href="#staff">Staff</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://discord.gg/VnfGXGS3" target="_blank">Discord</a>
 </nav>
 
+<header id="home">
+    <h1>SLOCRAFT</h1>
+    <p>Ultimate experience for 1.21.1 and beyond.</p>
+    <div>
+        <a href="#vote" class="btn btn-v"><i class="fas fa-star"></i> VOTE NOW</a>
+        <a href="https://discord.gg/VnfGXGS3" target="_blank" class="btn btn-d"><i class="fab fa-discord"></i> DISCORD</a>
+    </div>
+</header>
+
 <div class="container">
-    <div class="status-box">
-        <div>
-            <strong>Status:</strong> <span id="server-status">Loading...</span>
+    
+    <div class="status-container">
+        <div class="status-item">
+            <span class="status-label">SERVER STATUS</span>
+            <span id="server-status" class="status-value">LOADING</span>
         </div>
-        <div>
-            <strong>Players:</strong> <span id="player-count">0</span> / <span id="max-players">0</span>
+        <div class="status-item">
+            <span class="status-label">ONLINE PLAYERS</span>
+            <span class="status-value"><span id="player-count">0</span> / <span id="max-players">0</span></span>
         </div>
-        <div class="ip-container" onclick="copyIP()" style="cursor: pointer;" title="Click to copy">
-            <strong>IP:</strong> <span class="ip-address" id="ip-text">slocraft.net</span>
-            <span id="copy-status" style="margin-left: 10px; font-size: 0.8em; color: #4caf50; display: none;">Copied!</span>
+        <div class="status-item copy-box" onclick="copyIP()">
+            <span class="status-label">IP ADDRESS (CLICK)</span>
+            <span id="ip-text" class="status-value">slocraft.net</span>
+            <div id="copy-status" style="display:none; font-size: 10px; color: var(--primary);">COPIED!</div>
         </div>
     </div>
-</div>
 
-    <section style="margin-left: 20px; margin-right: 20px;">
-    <h2>About the Server</h2>
-    <p>Welcome to <strong style="color: rgb(115, 115, 244)">SloCraft!</strong> We are a community of Minecraft enthusiasts. Our server offers a safe and friendly environment for players of all ages.</p>
-    
-    <h3>What do we offer?</h3>
-    <ul>
-        <li><strong>SMP:</strong> Classic survival experience with a player-driven economy and shop.</li>
-        <li><strong>PVP:</strong> Battle other players in arenas.</li>
-        <li><strong>Boat Racing:</strong> High-speed ice tracks designed to test your precision and speed.</li>
-    </ul>
+    <section id="vote">
+        <div class="vote-section">
+            <h2 style="font-family: 'Montserrat'; color: var(--accent-vote); margin-top: 0;">Support SloCraft</h2>
+            <p>Help us grow by voting daily and earn exclusive in-game rewards!</p>
+            <a href="https://minecraftservers.org/server/686412" target="_blank" class="btn btn-v" style="margin-top: 10px;">
+                <i class="fas fa-external-link-alt"></i> VOTE ON MINECRAFTSERVERS.ORG
+            </a>
+        </div>
     </section>
 
-    <section style="text-align: center; margin-top: 40px; margin-left: 20px; margin-right: 20px;">
-        <h2>Join us today!</h2>
-        <p>Need help? Visit our Discord channel!</p>
-        <a href="https://discord.gg/VnfGXGS3" class="btn" target="_blank" rel="noopener noreferrer">Join Discord</a>
+    <section id="gamemodes">
+        <h2 style="text-align: center; font-family: 'Montserrat'; font-size: 2rem; margin-bottom: 40px;">Our Gamemodes</h2>
+        <div class="mode-grid">
+            <div class="mode-card">
+                <i class="fas fa-campground"></i>
+                <h3>Survival SMP</h3>
+                <p>Join our Survival world with a fully working shop economy. Build, trade, and dominate the server market.</p>
+            </div>
+            <div class="mode-card">
+                <i class="fas fa-ship"></i>
+                <h3>Boat Racing</h3>
+                <p>Test your drifting skills on our high-speed ice tracks. Post the fastest time and beat the records!</p>
+            </div>
+            <div class="mode-card">
+                <img src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png" alt="PvP" style="width: 50px; height: 50px; margin-bottom: 20px;">
+                <h3>1v1 PvP</h3>
+                <p>Challenge your friends or enemies in our 1v1 arenas. Prove who is the ultimate warrior on SloCraft.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="staff" style="text-align: center;">
+        <h2 style="font-family: 'Montserrat'; font-size: 2rem;">Staff Team</h2>
+        <p style="color: var(--text-dim); margin-top: 30px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">Management</p>
+        <div class="staff-grid">
+            <div class="member">
+                <img src="https://mc-heads.net/avatar/TheKillzy/100" alt="TheKillzy">
+                <p>TheKillzy</p><span>CREATOR</span>
+            </div>
+            <div class="member">
+                <img src="https://mc-heads.net/avatar/Lasbaherica/100" alt="Lasbaherica">
+                <p>Lasbaherica</p><span>OWNER</span>
+            </div>
+        </div>
+
+        <p style="color: var(--text-dim); margin-top: 50px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">Builders</p>
+        <div class="staff-grid">
+            <div class="member">
+                <img src="https://mc-heads.net/avatar/NoobGhostYT/100" alt="NoobGhostYT">
+                <p>NoobGhostYT</p>
+            </div>
+            <div class="member">
+                <img src="https://minotar.net/avatar/Amethysted11/100" alt="Amethysted11">
+                <p>Amethysted11</p>
+            </div>
+            <div class="member">
+                <img src="https://mc-heads.net/avatar/Snilky_/100" alt="Snilky_">
+                <p>Snilky_</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 style="text-align: center; font-family: 'Montserrat'; font-size: 2rem; margin-bottom: 40px;">FAQ</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <details>
+                <summary>What version is supported?</summary>
+                <div class="faq-text">SloCraft supports version <strong>1.21.1 and higher</strong>.</div>
+            </details>
+            <details>
+                <summary>Are there rewards for voting?</summary>
+                <div class="faq-text">Yes! Voting daily helps the server and gives you special rewards in-game.</div>
+            </details>
+        </div>
     </section>
 </div>
 
 <footer>
-    &copy; 2026 SloCraft<br>
+    <p>&copy; 2026 SloCraft Network. Not an official Minecraft product.</p>
 </footer>
+
+<script>
+    function copyIP() {
+        const ipText = document.getElementById('ip-text').innerText;
+        navigator.clipboard.writeText(ipText).then(() => {
+            const status = document.getElementById('copy-status');
+            status.style.display = 'block';
+            setTimeout(() => { status.style.display = 'none'; }, 2000);
+        });
+    }
+
+    async function getStatus() {
+        try {
+            const response = await fetch(`https://api.mcsrvstat.us/2/slocraft.net`);
+            const data = await response.json();
+            const statusEl = document.getElementById('server-status');
+            if (data.online) {
+                statusEl.innerText = "ONLINE";
+                statusEl.style.color = "#4CAF50";
+                document.getElementById('player-count').innerText = data.players.online;
+                document.getElementById('max-players').innerText = data.players.max;
+            } else {
+                statusEl.innerText = "OFFLINE";
+                statusEl.style.color = "#f44336";
+            }
+        } catch (e) { console.error(e); }
+    }
+    getStatus();
+    setInterval(getStatus, 60000);
+</script>
 
 </body>
 </html>
-
-
-<script>
-function copyIP() {
-    const ipText = document.getElementById('ip-text').innerText;
-    navigator.clipboard.writeText(ipText).then(() => {
-        const status = document.getElementById('copy-status');
-        status.style.display = 'inline';
-        
-        setTimeout(() => {
-            status.style.display = 'none';
-        }, 2000);
-    }).catch(err => {
-        console.error('Error: ', err);
-    });
-}
-
-
-async function getStatus() {
-    const ip = "slocraft.net";
-    const statusElement = document.getElementById('server-status');
-    const playersElement = document.getElementById('player-count');
-    const maxPlayersElement = document.getElementById('max-players');
-
-    try {
-        const response = await fetch(`https://api.mcsrvstat.us/2/${ip}`);
-        
-        if (!response.ok) throw new Error('Error');
-        
-        const data = await response.json();
-
-        if (data.online === true) {
-            statusElement.innerText = "Online";
-            statusElement.style.color = "#4CAF50"; 
-            playersElement.innerText = data.players.online;
-            maxPlayersElement.innerText = data.players.max;
-        } else {
-            statusElement.innerText = "Offline";
-            statusElement.style.color = "#f44336";
-            playersElement.innerText = "0";
-            maxPlayersElement.innerText = "0";
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        statusElement.innerText = "API not reachable";
-        statusElement.style.color = "#f44336";
-    }
-}
-
-getStatus();
-setInterval(getStatus, 60000);
-</script>
